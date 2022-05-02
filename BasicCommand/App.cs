@@ -14,7 +14,8 @@ namespace BasicCommand
         {
             application.CreateRibbonTab(TabName);
 
-            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyPath = assembly.Location;
 
             var graphicsPanel = application.CreateRibbonPanel(TabName, PanelName);
 
