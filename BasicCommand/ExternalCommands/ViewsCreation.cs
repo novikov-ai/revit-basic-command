@@ -8,8 +8,7 @@ namespace BasicCommand.ExternalCommands
     public class ViewsCreation : Command
     {
         public override string Name => "Views";
-        public override string Description =>
-            "Views creation by elements of selected category";
+        public override string Description => "Views creation by elements of selected category";
         
         protected override void RunFunc(ExternalCommandData commandData)
         {

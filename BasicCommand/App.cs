@@ -18,9 +18,9 @@ namespace BasicCommand
 
             var graphicsPanel = application.CreateRibbonPanel(TabName, PanelName);
 
-            var pbDataAutoViewsWalls = PushButtonFactory.Create(assemblyPath, new ViewsCreation());
+            var autoViewsPushButtonData = PushButtonFactory.Create(assemblyPath, new ViewsCreation());
             
-            graphicsPanel.AddItem(pbDataAutoViewsWalls);
+            graphicsPanel.AddItem(autoViewsPushButtonData);
 
             return Result.Succeeded;
         }
