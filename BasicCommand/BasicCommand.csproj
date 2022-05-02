@@ -54,6 +54,8 @@
     <ItemGroup>
         <Compile Include="Abstract\Command.cs" />
         <Compile Include="Abstract\CommandInfo.cs" />
+        <Compile Include="DefaultExample\App.cs" />
+        <Compile Include="DefaultExample\ViewsCreation.cs" />
         <Compile Include="ExternalCommands\ViewsCreation.cs" />
         <Compile Include="RibbonItemFactories\PushButtonFactory.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
