@@ -4,38 +4,77 @@
 
 ## Content
 
-- Abstract
+- [Abstract](https://github.com/novikov-ai/revit-basic-command/tree/main/BasicCommand/Abstract)
     - Command (inherit all your plugins from Command Interface instead of IExternalCommand)
     - CommandInfo
   
 
-- RibbonItemFactories
+- [RibbonItemFactories](https://github.com/novikov-ai/revit-basic-command/tree/main/BasicCommand/RibbonItemFactories)
     - PushButtonFactory (use PushButtonFactory.Create(...) for PushButtonData creation)
   
 
-- ExternalCommands
+- [ExternalCommands](https://github.com/novikov-ai/revit-basic-command/tree/main/BasicCommand/ExternalCommands)
     - ViewsCreation (example of classic Revit external command)
   
 
-- App (entry point)
+- [App (entry point)](https://github.com/novikov-ai/revit-basic-command/blob/main/BasicCommand/App.cs)
 
 ---
 
-## Profit (using Command way)
+## Basic Command way
 
-- 2.6 (!) times fewer lines of code
+1. inherit new plugin (external command) from [Command](https://github.com/novikov-ai/revit-basic-command/blob/main/BasicCommand/Abstract/Command.cs)
+
+2. override method RunFunc(...) and implement your logic inside the method 
+   
+    2.1. if you need modeless window, provide instance of your window to method SetUpModeless(...)
+   
+    2.2. you don't need to try/catch inside RunFunc(...), but you could throws 3 type of exceptions (see RunFunc(...) summary)
+
+3. override fields: Name, Description, Picture, Version (if you don't override any fields, then their values will set by default)
+
+**Notes**:
+- don't forget to increment the version number of your command, when you improve or fix it (field Version)
+- it's easy to log every user action (logging errors or collecting statistic):
+  - add appropriate logic for your purpose inside Command.Execute(...)
+- if you want to create other RibbonItem (eg. PullButton), just create another [RibbonItemFactory](https://github.com/novikov-ai/revit-basic-command/tree/main/BasicCommand/RibbonItemFactories) like a PushButtonFactory and use it in a similar way
+
+*Example: see implementation of [ViewCreation external command](https://github.com/novikov-ai/revit-basic-command/blob/main/BasicCommand/ExternalCommands/ViewsCreation.cs)*
+
+---
+
+## Profit (using Basic Command way)
+
+- 2.6 (!) times fewer lines of code for every external command
   
 - easily maintenance of developed commands
   
 - minimize your logical errors (you don't need to provide string path to your external command when you call new PushButtonData(...), now you just pass an instance of command to PushButtonFactory.Create(...))
 
-- access for collecting logs and statistics (you get opportunity to handle all the external commands from one place - Command.Execute(...) method)
+- easy collection logs and statistics (you get opportunity to manage all the external commands from one place - Command.Execute(...) method)
 
 ---
 
-## Comparison: Command VS IExternalCommand:
+## Comparison: Basic Command VS IExternalCommand:
 
-### Command way (abstract class)
+### Basic Command way (abstract class + RibbonItemFactory)
+
+#### App : IExternalApplication
+~~~
+// lines count: 2
+
+public Result OnStartup(UIControlledApplication application)
+{
+    ...
+    
+    var autoViewsPushButtonData = PushButtonFactory.Create(assemblyPath, new ViewsCreation());
+    
+    graphicsPanel.AddItem(autoViewsPushButtonData);
+
+    ...
+}
+~~~
+
 #### ViewsCreation : Command
 ~~~
 // lines count: 22
@@ -57,23 +96,7 @@ public class ViewsCreation : Command
 }
 ~~~
 
-#### App : IExternalApplication
-~~~
-// lines count: 2
-
-public Result OnStartup(UIControlledApplication application)
-{
-    ...
-    
-    var autoViewsPushButtonData = PushButtonFactory.Create(assemblyPath, new ViewsCreation());
-    
-    graphicsPanel.AddItem(autoViewsPushButtonData);
-
-    ...
-}
-~~~
-
-### IExternalCommand way (interface):
+### IExternalCommand way (default interface + constructor):
 #### DefaultExample.App : IExternalApplication
 ~~~
 // lines count: 12
