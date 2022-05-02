@@ -5,7 +5,7 @@
 ## Content
 
 - [Abstract](https://github.com/novikov-ai/revit-basic-command/tree/main/BasicCommand/Abstract)
-    - Command (inherit all your plugins from Command Interface instead of IExternalCommand)
+    - Command (inherit all your plugins from Command abstract class instead of IExternalCommand interface)
     - CommandInfo
   
 
@@ -61,7 +61,7 @@
 
 #### App : IExternalApplication
 ~~~
-// lines count: 2
+// lines count: 1
 
 public Result OnStartup(UIControlledApplication application)
 {
@@ -69,21 +69,20 @@ public Result OnStartup(UIControlledApplication application)
     
     var autoViewsPushButtonData = PushButtonFactory.Create(assemblyPath, new ViewsCreation());
     
-    graphicsPanel.AddItem(autoViewsPushButtonData);
-
     ...
 }
 ~~~
 
 #### ViewsCreation : Command
 ~~~
-// lines count: 22
+// lines count: 23
 
 [Transaction(TransactionMode.Manual)]
 public class ViewsCreation : Command
 {
     public override string Name => "Views";
     public override string Description => "Views creation by elements of selected category";
+    public override string Version => "1.2";
             
     protected override void RunFunc(ExternalCommandData commandData)
     {
