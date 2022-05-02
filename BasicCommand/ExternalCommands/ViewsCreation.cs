@@ -9,7 +9,8 @@ namespace BasicCommand.ExternalCommands
     {
         public override string Name => "Views";
         public override string Description => "Views creation by elements of selected category";
-        
+        public override string Version => "1.2";
+
         protected override void RunFunc(ExternalCommandData commandData)
         {
             // SetUpModeless(new ViewsCreationWindow(commandData));
